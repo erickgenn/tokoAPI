@@ -32,8 +32,17 @@ class PmaProductController extends Controller
             'capital_price' => 'required | numeric | min:25 | lt:price',
             'price' => 'required | numeric | min:25'
         ]);
-
-        $product = Pma_product::create($request->all());
+        
+        $product = new Pma_product();
+        $product->product_sku = $request['product_sku'];
+        $product->vendor_id = $request['vendor_id'];
+        $product->name = $request['name'];
+        $product->quantity = $request['quantity'];
+        $product->capital_price = $request['capital_price'];
+        $product->price = $request['price'];
+        $product->save();
+        
+        //$product = Pma_product::create($request->all());
 
         return response()->json($product);
     }
@@ -81,7 +90,7 @@ class PmaProductController extends Controller
      */
     public function update(Request $request, $sku)
     {
-        $search = Pma_product::findOrFail($sku);
+        $product = Pma_product::findOrFail($sku);
         
             $validator = $this->validate($request, [
                 'name' =>'required | min:3',
@@ -89,9 +98,17 @@ class PmaProductController extends Controller
                 'capital_price' => 'required | numeric | min:25 | lt:price',
                 'price' => 'required | numeric | min:25'
             ]);
-                   
-                Pma_product::where('product_sku', $sku)->update($request->all());
-                return response()->json('Data Has Been Updated');    
+
+            $product->product_sku = $request['product_sku'];
+            $product->vendor_id = $request['vendor_id'];
+            $product->name = $request['name'];
+            $product->quantity = $request['quantity'];
+            $product->capital_price = $request['capital_price'];
+            $product->price = $request['price'];
+            $product->save();
+        
+        //Pma_product::where('product_sku', $sku)->update($request->all());
+        return response()->json('Data Has Been Updated');    
     }
     
 

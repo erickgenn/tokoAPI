@@ -25,7 +25,11 @@ class PmaVendorController extends Controller
      */
     public function create(Request $request)
     {
-        $vendor = Pma_vendor::create($request->all());
+        $vendor = new Pma_vendor();
+        $product->vendor_name = $request['vendor_name'];
+        $product->save();
+        
+        //$vendor = Pma_vendor::create($request->all());
         return response()->json($vendor);
     }
 
@@ -72,13 +76,16 @@ class PmaVendorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $search = Pma_vendor::findOrFail($sku);
+        $vendor = Pma_vendor::findOrFail($id);
         
         $validator = $this->validate($request, [
             'vendor_name' =>'required | min:3',
         ]);
+
+        $vendor->vendor_name = $request['vendor_name'];
+        $vendor->save();
                
-        Pma_vendor::where('vendor_id', $id)->update($request->all());
+        //Pma_vendor::where('vendor_id', $id)->update($request->all());
         return response()->json('Data Has Been Updated');  
     }
 
